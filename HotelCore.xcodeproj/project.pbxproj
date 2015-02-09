@@ -16,6 +16,10 @@
 		1D134E451A896550005510B0 /* HotelCoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E441A896550005510B0 /* HotelCoreTests.m */; };
 		1D134E511A896586005510B0 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 1D134E501A896586005510B0 /* .gitignore */; };
 		1D134E561A89666C005510B0 /* seed.json in Resources */ = {isa = PBXBuildFile; fileRef = 1D134E551A89666C005510B0 /* seed.json */; };
+		1D134E591A8969E0005510B0 /* Room.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E581A8969E0005510B0 /* Room.m */; };
+		1D134E5C1A8969E0005510B0 /* Guest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E5B1A8969E0005510B0 /* Guest.m */; };
+		1D134E5F1A8969E0005510B0 /* Hotel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E5E1A8969E0005510B0 /* Hotel.m */; };
+		1D134E621A8969E1005510B0 /* Reservation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E611A8969E0005510B0 /* Reservation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +48,14 @@
 		1D134E441A896550005510B0 /* HotelCoreTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HotelCoreTests.m; sourceTree = "<group>"; };
 		1D134E501A896586005510B0 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		1D134E551A89666C005510B0 /* seed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = seed.json; sourceTree = "<group>"; };
+		1D134E571A8969E0005510B0 /* Room.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Room.h; sourceTree = "<group>"; };
+		1D134E581A8969E0005510B0 /* Room.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Room.m; sourceTree = "<group>"; };
+		1D134E5A1A8969E0005510B0 /* Guest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Guest.h; sourceTree = "<group>"; };
+		1D134E5B1A8969E0005510B0 /* Guest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Guest.m; sourceTree = "<group>"; };
+		1D134E5D1A8969E0005510B0 /* Hotel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hotel.h; sourceTree = "<group>"; };
+		1D134E5E1A8969E0005510B0 /* Hotel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Hotel.m; sourceTree = "<group>"; };
+		1D134E601A8969E0005510B0 /* Reservation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reservation.h; sourceTree = "<group>"; };
+		1D134E611A8969E0005510B0 /* Reservation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reservation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +140,14 @@
 			children = (
 				1D134E551A89666C005510B0 /* seed.json */,
 				1D134E2C1A896550005510B0 /* HotelCore.xcdatamodeld */,
+				1D134E601A8969E0005510B0 /* Reservation.h */,
+				1D134E611A8969E0005510B0 /* Reservation.m */,
+				1D134E5D1A8969E0005510B0 /* Hotel.h */,
+				1D134E5E1A8969E0005510B0 /* Hotel.m */,
+				1D134E5A1A8969E0005510B0 /* Guest.h */,
+				1D134E5B1A8969E0005510B0 /* Guest.m */,
+				1D134E571A8969E0005510B0 /* Room.h */,
+				1D134E581A8969E0005510B0 /* Room.m */,
 				1D134E351A896550005510B0 /* Images.xcassets */,
 			);
 			name = Models;
@@ -250,6 +270,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D134E5C1A8969E0005510B0 /* Guest.m in Sources */,
+				1D134E5F1A8969E0005510B0 /* Hotel.m in Sources */,
+				1D134E621A8969E1005510B0 /* Reservation.m in Sources */,
+				1D134E591A8969E0005510B0 /* Room.m in Sources */,
 				1D134E2E1A896550005510B0 /* HotelCore.xcdatamodeld in Sources */,
 				1D134E2B1A896550005510B0 /* AppDelegate.m in Sources */,
 				1D134E311A896550005510B0 /* ViewController.m in Sources */,
