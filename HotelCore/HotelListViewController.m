@@ -73,12 +73,8 @@
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"number" ascending:YES];
-    NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
-    NSArray *rooms = [[[self.hotels[indexPath.row] rooms] allObjects]sortedArrayUsingDescriptors:descriptors];
-    
     RoomsViewController *roomVC = [RoomsViewController new];
-    roomVC.rooms = rooms;
+    roomVC.selectedHotel = self.hotels[indexPath.row];
     [self.navigationController pushViewController:roomVC animated:true];
 }
 

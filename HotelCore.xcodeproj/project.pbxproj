@@ -25,6 +25,7 @@
 		1D134E6E1A89823A005510B0 /* RoomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E6D1A89823A005510B0 /* RoomCell.m */; };
 		1D134E711A89D3F5005510B0 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E701A89D3F5005510B0 /* MenuViewController.m */; };
 		1D134E741A89D558005510B0 /* MenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E731A89D558005510B0 /* MenuCell.m */; };
+		1D134E771A8A8126005510B0 /* ReservationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E761A8A8126005510B0 /* ReservationViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,8 @@
 		1D134E701A89D3F5005510B0 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
 		1D134E721A89D558005510B0 /* MenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuCell.h; sourceTree = "<group>"; };
 		1D134E731A89D558005510B0 /* MenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuCell.m; sourceTree = "<group>"; };
+		1D134E751A8A8125005510B0 /* ReservationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReservationViewController.h; sourceTree = "<group>"; };
+		1D134E761A8A8126005510B0 /* ReservationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReservationViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +193,8 @@
 				1D134E6A1A898114005510B0 /* RoomsViewController.m */,
 				1D134E6F1A89D3F5005510B0 /* MenuViewController.h */,
 				1D134E701A89D3F5005510B0 /* MenuViewController.m */,
+				1D134E751A8A8125005510B0 /* ReservationViewController.h */,
+				1D134E761A8A8126005510B0 /* ReservationViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -298,6 +303,7 @@
 				1D134E5C1A8969E0005510B0 /* Guest.m in Sources */,
 				1D134E5F1A8969E0005510B0 /* Hotel.m in Sources */,
 				1D134E681A897089005510B0 /* HotelCell.m in Sources */,
+				1D134E771A8A8126005510B0 /* ReservationViewController.m in Sources */,
 				1D134E621A8969E1005510B0 /* Reservation.m in Sources */,
 				1D134E711A89D3F5005510B0 /* MenuViewController.m in Sources */,
 				1D134E591A8969E0005510B0 /* Room.m in Sources */,
@@ -492,6 +498,7 @@
 				1D134E4A1A896550005510B0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1D134E4B1A896550005510B0 /* Build configuration list for PBXNativeTarget "HotelCoreTests" */ = {
 			isa = XCConfigurationList;
@@ -500,6 +507,7 @@
 				1D134E4D1A896550005510B0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

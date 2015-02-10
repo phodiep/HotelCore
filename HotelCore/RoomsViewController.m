@@ -9,11 +9,13 @@
 #import "RoomsViewController.h"
 #import "RoomCell.h"
 #import "Room.h"
+#import "ReservationViewController.h"
 
 #pragma mark - Interface
 @interface RoomsViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
+@property (strong, nonatomic) NSArray *rooms;
 
 @end
 
@@ -36,6 +38,9 @@
     self.tableView.delegate = self;
     [self.tableView registerClass:RoomCell.class forCellReuseIdentifier:@"ROOM_CELL"];
     
+    NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"number" ascending:YES];
+    NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
+    self.rooms = [[[self.selectedHotel rooms] allObjects]sortedArrayUsingDescriptors:descriptors];
     
 }
 
@@ -61,6 +66,11 @@
 #pragma mark - UITableViewDelegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"%@", [self.rooms[indexPath.row] number]);
+ 
+    ReservationViewController *reservationVC = [ReservationViewController new];
+    reservationVC.selectedRoom = self.rooms[indexPath.row];
+    [self.navigationController pushViewController:reservationVC animated:true];
+    
 }
 
 @end
