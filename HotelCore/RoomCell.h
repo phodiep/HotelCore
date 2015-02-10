@@ -1,5 +1,5 @@
 //
-//  HotelCell.h
+//  RoomCell.h
 //  HotelCore
 //
 //  Created by Pho Diep on 2/9/15.
@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HotelCell : UITableViewCell
+@interface RoomCell : UITableViewCell
 
 @property (strong, nonatomic) UILabel *nameLabel;
-@property (strong, nonatomic) UILabel *locationLabel;
+@property (strong, nonatomic) UILabel *bedsLabel;
 
 @end

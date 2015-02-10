@@ -10,17 +10,21 @@
 #import "AppDelegate.h"
 #import "HotelCell.h"
 #import "Hotel.h"
+#import "Room.h"
+#import "RoomsViewController.h"
 
 #pragma mark - Interface
 @interface HotelListViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) UITableView* tableView;
+@property (weak, nonatomic) NSManagedObjectContext *context;
 
 @end
 
 #pragma mark - Implementation
 @implementation HotelListViewController
 
+#pragma mark - UIViewController Lifecycle
 - (void)loadView {
     
     self.tableView = [[UITableView alloc]init];
@@ -33,26 +37,25 @@
     [super viewDidLoad];
     
     self.title = @"Hotels";
-    
+
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self.tableView registerClass:HotelCell.class forCellReuseIdentifier:@"HOTEL_CELL"];
     
 
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
-    NSManagedObjectContext *context =  appDelegate.managedObjectContext;
+    self.context =  appDelegate.managedObjectContext;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Hotel"];
     NSError *fetchError;
     
-    NSArray *results = [context executeFetchRequest:fetchRequest error:&fetchError];
+    NSArray *results = [self.context executeFetchRequest:fetchRequest error:&fetchError];
     if (fetchError == nil) {
         self.hotels = results;
         [self.tableView reloadData];
     }
-    
 }
 
-#pragma mark - UITableViewDelegate
+#pragma mark - UITableViewDatasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (self.hotels == nil) {
         return 0;
@@ -62,14 +65,22 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     HotelCell *cell = (HotelCell*)[self.tableView dequeueReusableCellWithIdentifier:@"HOTEL_CELL" forIndexPath:indexPath];
-    Hotel *hotel = self.hotels[indexPath.row];
-
-    cell.nameLabel.text = hotel.name;
-    
+    cell.nameLabel.text = [(Hotel*)self.hotels[indexPath.row] name];
+    cell.locationLabel.text = [(Hotel*)self.hotels[indexPath.row] location];
     return cell;
 }
 
-
+#pragma mark - UITableViewDelegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"number" ascending:YES];
+    NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
+    NSArray *rooms = [[[self.hotels[indexPath.row] rooms] allObjects]sortedArrayUsingDescriptors:descriptors];
+    
+    RoomsViewController *roomVC = [RoomsViewController new];
+    roomVC.rooms = rooms;
+    [self.navigationController pushViewController:roomVC animated:true];
+}
 
 
 @end
