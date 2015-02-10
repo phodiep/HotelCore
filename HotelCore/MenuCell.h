@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  MenuCell.h
 //  HotelCore
 //
 //  Created by Pho Diep on 2/9/15.
@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface MenuCell : UITableViewCell
 
+@property (strong, nonatomic) UILabel *nameLabel;
 
 @end
-

@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "HotelListViewController.h"
+#import "MenuViewController.h"
 #import "Hotel.h"
 #import "Room.h"
 
@@ -23,7 +23,7 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window makeKeyAndVisible];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[HotelListViewController new]];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[MenuViewController new]];
     self.window.rootViewController = navigationController;
     
     [self seedDatabaseIfNecessary];
