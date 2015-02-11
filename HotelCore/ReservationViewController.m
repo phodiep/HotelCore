@@ -47,6 +47,8 @@
     self.endDatePicker.datePickerMode = UIDatePickerModeDate;
     [self.endDatePicker setMinimumDate:[NSDate date]];
     
+    [self presetDatesAndLockIfNecessary];
+    
     [startDateLabel setTranslatesAutoresizingMaskIntoConstraints:false];
     [endDateLabel setTranslatesAutoresizingMaskIntoConstraints:false];
     [self.startDatePicker setTranslatesAutoresizingMaskIntoConstraints:false];
@@ -67,7 +69,6 @@
     
     [rootView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:
                               @"V:|-75-[startDateLabel][startDatePicker]-8-[endDateLabel]-[endDatePicker]-8-[reservationButton]-16-|" options:NSLayoutFormatAlignAllCenterX metrics:nil views:views]];
-
     
     self.view = rootView;
 }
@@ -75,8 +76,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.title = @"Reservation";
+    self.title = [NSString stringWithFormat:@"Rm %@ Reservation", self.selectedRoom.number];
     self.view.backgroundColor = [UIColor lightGrayColor];
+}
+
+- (void)presetDatesAndLockIfNecessary {
+    if (self.dateSet == true) {
+        self.startDatePicker.date = self.setStartDate;
+        self.startDatePicker.minimumDate = self.setStartDate;
+        self.startDatePicker.maximumDate = self.setStartDate;
+        self.endDatePicker.date = self.setEndDate;
+        self.endDatePicker.minimumDate = self.setEndDate;
+        self.endDatePicker.maximumDate = self.setEndDate;
+        
+        self.startDatePicker.enabled = false;
+        self.endDatePicker.enabled = false;
+    }
 }
 
 #pragma mark - Reservation Button Actions

@@ -26,6 +26,8 @@
 		1D134E711A89D3F5005510B0 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E701A89D3F5005510B0 /* MenuViewController.m */; };
 		1D134E741A89D558005510B0 /* MenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E731A89D558005510B0 /* MenuCell.m */; };
 		1D134E771A8A8126005510B0 /* ReservationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E761A8A8126005510B0 /* ReservationViewController.m */; };
+		1D134E7A1A8AC789005510B0 /* AvailablityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E791A8AC789005510B0 /* AvailablityViewController.m */; };
+		1D134E7D1A8B0BB1005510B0 /* AvailableRoomsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E7C1A8B0BB1005510B0 /* AvailableRoomsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +76,10 @@
 		1D134E731A89D558005510B0 /* MenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuCell.m; sourceTree = "<group>"; };
 		1D134E751A8A8125005510B0 /* ReservationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReservationViewController.h; sourceTree = "<group>"; };
 		1D134E761A8A8126005510B0 /* ReservationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReservationViewController.m; sourceTree = "<group>"; };
+		1D134E781A8AC789005510B0 /* AvailablityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvailablityViewController.h; sourceTree = "<group>"; };
+		1D134E791A8AC789005510B0 /* AvailablityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvailablityViewController.m; sourceTree = "<group>"; };
+		1D134E7B1A8B0BB1005510B0 /* AvailableRoomsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvailableRoomsViewController.h; sourceTree = "<group>"; };
+		1D134E7C1A8B0BB1005510B0 /* AvailableRoomsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvailableRoomsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +201,10 @@
 				1D134E701A89D3F5005510B0 /* MenuViewController.m */,
 				1D134E751A8A8125005510B0 /* ReservationViewController.h */,
 				1D134E761A8A8126005510B0 /* ReservationViewController.m */,
+				1D134E781A8AC789005510B0 /* AvailablityViewController.h */,
+				1D134E791A8AC789005510B0 /* AvailablityViewController.m */,
+				1D134E7B1A8B0BB1005510B0 /* AvailableRoomsViewController.h */,
+				1D134E7C1A8B0BB1005510B0 /* AvailableRoomsViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -302,12 +312,14 @@
 			files = (
 				1D134E5C1A8969E0005510B0 /* Guest.m in Sources */,
 				1D134E5F1A8969E0005510B0 /* Hotel.m in Sources */,
+				1D134E7A1A8AC789005510B0 /* AvailablityViewController.m in Sources */,
 				1D134E681A897089005510B0 /* HotelCell.m in Sources */,
 				1D134E771A8A8126005510B0 /* ReservationViewController.m in Sources */,
 				1D134E621A8969E1005510B0 /* Reservation.m in Sources */,
 				1D134E711A89D3F5005510B0 /* MenuViewController.m in Sources */,
 				1D134E591A8969E0005510B0 /* Room.m in Sources */,
 				1D134E6B1A898114005510B0 /* RoomsViewController.m in Sources */,
+				1D134E7D1A8B0BB1005510B0 /* AvailableRoomsViewController.m in Sources */,
 				1D134E2E1A896550005510B0 /* HotelCore.xcdatamodeld in Sources */,
 				1D134E741A89D558005510B0 /* MenuCell.m in Sources */,
 				1D134E2B1A896550005510B0 /* AppDelegate.m in Sources */,

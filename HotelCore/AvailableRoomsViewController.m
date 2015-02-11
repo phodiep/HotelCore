@@ -1,26 +1,24 @@
 //
-//  RoomsViewController.m
+//  AvailableRoomsViewController.m
 //  HotelCore
 //
-//  Created by Pho Diep on 2/9/15.
+//  Created by Pho Diep on 2/10/15.
 //  Copyright (c) 2015 Pho Diep. All rights reserved.
 //
 
-#import "RoomsViewController.h"
-#import "RoomCell.h"
+#import "AvailableRoomsViewController.h"
 #import "Room.h"
+#import "RoomCell.h"
 #import "ReservationViewController.h"
 
-#pragma mark - Interface
-@interface RoomsViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface AvailableRoomsViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
-@property (strong, nonatomic) NSArray *rooms;
+@property (strong, nonatomic) NSArray *sortedRooms;
 
 @end
 
-#pragma mark - Implementation
-@implementation RoomsViewController
+@implementation AvailableRoomsViewController
 
 - (void)loadView {
     self.tableView = [[UITableView alloc] init];
@@ -31,8 +29,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    self.title = [NSString stringWithFormat:@"%@", self.selectedHotel.name];
+    
+    self.title = @"Available Rooms";
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -40,23 +38,23 @@
     
     NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"number" ascending:YES];
     NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
-    self.rooms = [[[self.selectedHotel rooms] allObjects]sortedArrayUsingDescriptors:descriptors];
+    self.sortedRooms = [self.rooms sortedArrayUsingDescriptors:descriptors];
     
 }
 
 #pragma mark - UITableViewDataSource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (self.rooms == nil) {
+    if (self.sortedRooms == nil) {
         return 0;
     }
-    return [self.rooms count];
+    return [self.sortedRooms count];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     RoomCell *cell = (RoomCell*)[self.tableView dequeueReusableCellWithIdentifier:@"ROOM_CELL" forIndexPath:indexPath];
-
-    Room *room = self.rooms[indexPath.row];
-
+    
+    Room *room = self.sortedRooms[indexPath.row];
+    
     cell.nameLabel.text = [[room number] stringValue];
     cell.bedsLabel.text = [[room beds] stringValue];
     
@@ -70,12 +68,16 @@
 
 #pragma mark - UITableViewDelegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"%@", [self.rooms[indexPath.row] number]);
- 
+    NSLog(@"%@", [self.sortedRooms[indexPath.row] number]);
+    
     ReservationViewController *reservationVC = [ReservationViewController new];
-    reservationVC.selectedRoom = self.rooms[indexPath.row];
+    reservationVC.selectedRoom = self.sortedRooms[indexPath.row];
+    reservationVC.dateSet = true;
+    reservationVC.setStartDate = self.setStartDate;
+    reservationVC.setEndDate = self.setEndDate;
     [self.navigationController pushViewController:reservationVC animated:true];
     
 }
+
 
 @end

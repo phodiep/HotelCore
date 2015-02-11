@@ -1,5 +1,5 @@
 //
-//  ReservationViewController.h
+//  AvailableRoomsViewController.h
 //  HotelCore
 //
 //  Created by Pho Diep on 2/10/15.
@@ -7,13 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Room.h"
 
-@interface ReservationViewController : UIViewController
+@interface AvailableRoomsViewController : UIViewController
 
-@property (strong, nonatomic) Room *selectedRoom;
+@property (strong, nonatomic) NSArray *rooms;
 
-@property (nonatomic) BOOL dateSet;
 @property (strong, nonatomic) NSDate *setStartDate;
 @property (strong, nonatomic) NSDate *setEndDate;
 

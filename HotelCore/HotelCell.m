@@ -25,10 +25,8 @@
         [self.contentView addSubview:self.locationLabel];
         
         NSDictionary *views = @{@"nameLabel": self.nameLabel, @"locationLabel": self.locationLabel};
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-16-[nameLabel]" options:0 metrics:nil views:views]];
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[locationLabel]-16-|" options:0 metrics:nil views:views]];
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[nameLabel(30)]-|" options:0 metrics:nil views:views]];
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[locationLabel(30)]-|" options:0 metrics:nil views:views]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[nameLabel]-|" options:0 metrics:nil views:views]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-16-[nameLabel]-[locationLabel]-16-|" options:NSLayoutFormatAlignAllCenterY metrics:nil views:views]];
     }
     
     return self;

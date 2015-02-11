@@ -24,10 +24,10 @@
         [self.contentView addSubview:self.bedsLabel];
         
         NSDictionary *views = @{@"nameLabel": self.nameLabel, @"bedsLabel": self.bedsLabel};
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-16-[nameLabel]" options:0 metrics:nil views:views]];
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[bedsLabel]-16-|" options:0 metrics:nil views:views]];
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[nameLabel(30)]-|" options:0 metrics:nil views:views]];
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[bedsLabel(30)]-|" options:0 metrics:nil views:views]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-16-[nameLabel]-[bedsLabel]-16-|" options:NSLayoutFormatAlignAllCenterY metrics:nil views:views]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[nameLabel]-|" options:0 metrics:nil views:views]];
+
+        
     }
     
     return self;

@@ -18,6 +18,7 @@
 
 @property (strong, nonatomic) UITableView* tableView;
 @property (weak, nonatomic) NSManagedObjectContext *context;
+@property (strong, nonatomic) UIBarButtonItem *addHotelButton;
 
 @end
 
@@ -42,9 +43,12 @@
     self.tableView.delegate = self;
     [self.tableView registerClass:HotelCell.class forCellReuseIdentifier:@"HOTEL_CELL"];
     
+    self.addHotelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewHotel:)];
+    self.navigationItem.rightBarButtonItem = self.addHotelButton;
 
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     self.context =  appDelegate.managedObjectContext;
+    
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Hotel"];
     NSError *fetchError;
     
@@ -70,6 +74,10 @@
     return cell;
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 45;
+}
+
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -78,5 +86,10 @@
     [self.navigationController pushViewController:roomVC animated:true];
 }
 
+#pragma mark - Button Actions
+- (void)addNewHotel:(UIBarButtonItem*)sender {
+    NSLog(@"new hotel");
+    
+}
 
 @end

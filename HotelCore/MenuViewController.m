@@ -9,6 +9,7 @@
 #import "MenuViewController.h"
 #import "MenuCell.h"
 #import "HotelListViewController.h"
+#import "AvailablityViewController.h"
 
 #pragma mark - Interface
 @interface MenuViewController () <UITableViewDataSource, UITableViewDelegate>
@@ -39,7 +40,7 @@
 
     [self.tableView registerClass:MenuCell.class forCellReuseIdentifier:@"MENU_CELL"];
     
-    self.menu = @[@"Hotels"];
+    self.menu = @[@"Hotels", @"Available Rooms"];
     
 }
 
@@ -56,12 +57,22 @@
     return cell;
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 45;
+}
+
+
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.menu[indexPath.row] isEqualToString:@"Hotels"]) {
         HotelListViewController *hotelListVC = [HotelListViewController new];
         [self.navigationController pushViewController:hotelListVC animated:true];
+        
+    } else if ([self.menu[indexPath.row] isEqualToString:@"Available Rooms"]) {
+        AvailablityViewController *availableVC = [AvailablityViewController new];
+        [self.navigationController pushViewController:availableVC animated:true];
     }
+    
 }
 
 @end
