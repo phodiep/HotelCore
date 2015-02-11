@@ -24,6 +24,14 @@
 @synthesize managedObjectModel = _managedObjectModel;
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
+-(instancetype)init {
+    self = [super init];
+    if (self) {
+        [self seedDatabaseIfNecessary];
+    }
+    return self;
+}
+
 -(instancetype)initForTesting {
     self = [super init];
     if (self) {

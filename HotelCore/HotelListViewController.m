@@ -7,11 +7,10 @@
 //
 
 #import "HotelListViewController.h"
-#import "AppDelegate.h"
 #import "HotelCell.h"
 #import "Hotel.h"
-#import "Room.h"
 #import "RoomsViewController.h"
+#import "HotelService.h"
 
 #pragma mark - Interface
 @interface HotelListViewController () <UITableViewDataSource, UITableViewDelegate>
@@ -38,7 +37,7 @@
     [super viewDidLoad];
     
     self.title = @"Hotels";
-
+    self.context = [[[HotelService sharedService] coreDataStack] managedObjectContext];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self.tableView registerClass:HotelCell.class forCellReuseIdentifier:@"HOTEL_CELL"];
@@ -46,18 +45,19 @@
     self.addHotelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewHotel:)];
     self.navigationItem.rightBarButtonItem = self.addHotelButton;
 
-    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
-    self.context =  appDelegate.managedObjectContext;
-    
+    [self fetchListOfHotels];
+}
+
+-(void)fetchListOfHotels {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Hotel"];
     NSError *fetchError;
-    
     NSArray *results = [self.context executeFetchRequest:fetchRequest error:&fetchError];
     if (fetchError == nil) {
         self.hotels = results;
         [self.tableView reloadData];
     }
 }
+
 
 #pragma mark - UITableViewDatasource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -88,7 +88,8 @@
 
 #pragma mark - Button Actions
 - (void)addNewHotel:(UIBarButtonItem*)sender {
-    NSLog(@"new hotel");
+    //todo
+    NSLog(@"new hotel - not yet implemented");
     
 }
 
