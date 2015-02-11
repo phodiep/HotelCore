@@ -56,9 +56,9 @@
 
 //        self.hotelSegmentControl = [[UISegmentedControl alloc] initWithItems:[self getNamesOfHotels]];
     self.hotelSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Fancy Estates", @"Solid Stay", @"Decent Inn", @"Okay Motel"]];
-
     self.hotelSegmentControl.frame = CGRectMake(0, 0, 300, 50);
     [self.hotelSegmentControl addTarget:self action:@selector(hotelSelected:) forControlEvents:UIControlEventValueChanged];
+    self.hotelSegmentControl.tintColor = [UIColor blackColor];
     
     [self setupForAutolayout:self.searchButton          addToView:rootView  keyForViewsDictionary:@"searchButton"];
     [self setupForAutolayout:startDateLabel             addToView:rootView  keyForViewsDictionary:@"startLabel"];
@@ -83,7 +83,7 @@
 
     AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     self.context = appDelegate.managedObjectContext;
-    
+    self.title = @"Search Available Rooms";
 }
 
 #pragma mark - autolayout setup
@@ -140,7 +140,7 @@
     } else {
         NSArray *availableRooms = [self filterForRoom];
         
-        if (availableRooms != nil) {
+        if ([availableRooms count] > 0 ) {
             AvailableRoomsViewController *availableVC = [AvailableRoomsViewController new];
             availableVC.rooms = availableRooms;
             availableVC.setStartDate = startDate;

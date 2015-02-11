@@ -72,11 +72,9 @@
 - (void)presetDatesAndLockIfNecessary {
     if (self.dateSet == true) {
         self.startDatePicker.date = self.setStartDate;
-        self.startDatePicker.minimumDate = self.setStartDate;
-        self.startDatePicker.maximumDate = self.setStartDate;
+        self.startDatePicker.userInteractionEnabled = false;
         self.endDatePicker.date = self.setEndDate;
-        self.endDatePicker.minimumDate = self.setEndDate;
-        self.endDatePicker.maximumDate = self.setEndDate;        
+        self.endDatePicker.userInteractionEnabled = false;
     }
 }
 
