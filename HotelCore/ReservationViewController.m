@@ -16,7 +16,7 @@
 @property (strong, nonatomic) UIDatePicker *startDatePicker;
 @property (strong, nonatomic) UIDatePicker *endDatePicker;
 @property (strong, nonatomic) UIButton *reservationButton;
-
+@property (strong, nonatomic) NSMutableDictionary *views;
 
 @end
 
@@ -27,6 +27,7 @@
 -(void)loadView {
     UIView *rootView = [[UIView alloc]init];
     rootView.frame = [[UIScreen mainScreen]bounds];
+    self.views = [[NSMutableDictionary alloc] init];
     
     self.reservationButton = [[UIButton alloc] init];
     [self.reservationButton setTitle:@"Book Reservation" forState:UIControlStateNormal];
@@ -49,26 +50,14 @@
     
     [self presetDatesAndLockIfNecessary];
     
-    [startDateLabel setTranslatesAutoresizingMaskIntoConstraints:false];
-    [endDateLabel setTranslatesAutoresizingMaskIntoConstraints:false];
-    [self.startDatePicker setTranslatesAutoresizingMaskIntoConstraints:false];
-    [self.endDatePicker setTranslatesAutoresizingMaskIntoConstraints:false];
-    [self.reservationButton setTranslatesAutoresizingMaskIntoConstraints:false];
+    [self setupForAutolayout:self.reservationButton  addToView:rootView  keyForViewsDictionary:@"reservationButton"];
+    [self setupForAutolayout:startDateLabel          addToView:rootView  keyForViewsDictionary:@"startDateLabel"];
+    [self setupForAutolayout:endDateLabel            addToView:rootView  keyForViewsDictionary:@"endDateLabel"];
+    [self setupForAutolayout:self.startDatePicker    addToView:rootView  keyForViewsDictionary:@"startDatePicker"];
+    [self setupForAutolayout:self.endDatePicker      addToView:rootView  keyForViewsDictionary:@"endDatePicker"];
     
-    [rootView addSubview:startDateLabel];
-    [rootView addSubview:endDateLabel];
-    [rootView addSubview:self.startDatePicker];
-    [rootView addSubview:self.endDatePicker];
-    [rootView addSubview:self.reservationButton];
-    
-    NSDictionary* views = @{@"reservationButton":self.reservationButton,
-                            @"startDateLabel":startDateLabel,
-                            @"endDateLabel":endDateLabel,
-                            @"startDatePicker":self.startDatePicker,
-                            @"endDatePicker":self.endDatePicker};
-    
-    [rootView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:
-                              @"V:|-75-[startDateLabel][startDatePicker]-8-[endDateLabel]-[endDatePicker]-8-[reservationButton]-16-|" options:NSLayoutFormatAlignAllCenterX metrics:nil views:views]];
+    [rootView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat: @"V:|-75-[startDateLabel]-[startDatePicker]-8-[endDateLabel]-[endDatePicker]-8-[reservationButton]-16-|"
+                                                                     options:NSLayoutFormatAlignAllCenterX metrics:nil views:self.views]];
     
     self.view = rootView;
 }
@@ -87,11 +76,16 @@
         self.startDatePicker.maximumDate = self.setStartDate;
         self.endDatePicker.date = self.setEndDate;
         self.endDatePicker.minimumDate = self.setEndDate;
-        self.endDatePicker.maximumDate = self.setEndDate;
-        
-        self.startDatePicker.enabled = false;
-        self.endDatePicker.enabled = false;
+        self.endDatePicker.maximumDate = self.setEndDate;        
     }
+}
+
+#pragma mark - autolayout setup
+- (void)setupForAutolayout:(id)object addToView:(UIView *)view keyForViewsDictionary:(id)key {
+    [object setTranslatesAutoresizingMaskIntoConstraints:false];
+    [view addSubview:object];
+    [self.views setObject:object forKey:key];
+    
 }
 
 #pragma mark - Reservation Button Actions
