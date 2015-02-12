@@ -112,6 +112,53 @@
     
 }
 
+- (void)testAddNewRoom {
+    NSNumber *number = @1;
+    NSNumber *beds = @2;
+    NSNumber *rate = @1;
+    
+    Room *room = [self.hotelService addNewRoom:number atHotel:self.hotel withNumberOfBeds:beds rate:rate];
+    
+    XCTAssertNotNil(room);
+}
+
+- (void)testAddNewRoomWithoutRate {
+    NSNumber *number = @1;
+    NSNumber *beds = @2;
+    
+    Room *room = [self.hotelService addNewRoom:number atHotel:self.hotel withNumberOfBeds:beds rate:nil];
+    
+    XCTAssertNotNil(room);
+}
+
+- (void)testAddNewRoomMissingNumber {
+    NSNumber *beds = @2;
+    NSNumber *rate = @1;
+    
+    Room *room = [self.hotelService addNewRoom:nil atHotel:self.hotel withNumberOfBeds:beds rate:rate];
+    
+    XCTAssertNil(room);
+}
+
+- (void)testAddNewRoomMissingBeds {
+    NSNumber *number = @1;
+    NSNumber *rate = @1;
+    
+    Room *room = [self.hotelService addNewRoom:number atHotel:self.hotel withNumberOfBeds:nil rate:rate];
+    
+    XCTAssertNil(room);
+}
+
+- (void)testAddNewRoomMissingHotel {
+    NSNumber *number = @1;
+    NSNumber *beds = @2;
+    NSNumber *rate = @1;
+    
+    Room *room = [self.hotelService addNewRoom:number atHotel:nil withNumberOfBeds:beds rate:rate];
+    
+    XCTAssertNil(room);
+}
+
 
 
 @end

@@ -45,18 +45,45 @@
     return self;
 }
 
+
+
 -(Hotel *)addNewHotel:(NSString*)name atLocation:(NSString*)location starRating:(NSNumber*)stars {
-    if (name == nil || location == nil) {
-        return nil;
+    if (name != nil && location != nil) {
+        Hotel *hotel = [NSEntityDescription insertNewObjectForEntityForName:@"Hotel" inManagedObjectContext:self.context];
+        hotel.name = name;
+        hotel.location = location;
+        if (stars > 0) {
+            hotel.stars = stars;
+        }
+        
+        NSError *saveError;
+        [self.context save:&saveError];
+        
+        if (saveError == nil) {
+            return hotel;
+        }
     }
-    
-    Hotel *hotel = [NSEntityDescription insertNewObjectForEntityForName:@"Hotel" inManagedObjectContext:self.context];
-    hotel.name = name;
-    hotel.location = location;
-    if (stars > 0) {
-        hotel.stars = stars;
+    return nil;
+}
+
+-(Room *)addNewRoom:(NSNumber *)number atHotel:(Hotel *)hotel withNumberOfBeds:(NSNumber *)beds rate:(NSNumber*)rate {
+    if (number != nil && hotel != nil && beds != nil) {
+        Room *room = [NSEntityDescription insertNewObjectForEntityForName:@"Room" inManagedObjectContext:self.context];
+        room.number = number;
+        room.beds = beds;
+        room.hotel = hotel;
+        if (rate != nil) {
+            room.rate = rate;
+        }
+        
+        NSError *saveError;
+        [self.context save:&saveError];
+        
+        if (saveError == nil) {
+            return room;
+        }
     }
-    return hotel;
+    return nil;
 }
 
 -(Reservation *)bookReservationForGuest:(Guest *)guest forRoom:(Room *)room startDate:(NSDate *)startDate endDate:(NSDate *)endDate {
