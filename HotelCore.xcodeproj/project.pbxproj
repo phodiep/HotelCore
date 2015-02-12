@@ -32,6 +32,7 @@
 		1D134E871A8C01E7005510B0 /* HotelService.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E861A8C01E7005510B0 /* HotelService.m */; };
 		1D134E8A1A8C1210005510B0 /* ReservationListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E891A8C1210005510B0 /* ReservationListViewController.m */; };
 		1D134E8D1A8C128E005510B0 /* ReservationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E8C1A8C128E005510B0 /* ReservationCell.m */; };
+		1D134E911A8D055D005510B0 /* HotelServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D134E901A8D055D005510B0 /* HotelServiceTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,6 +93,7 @@
 		1D134E891A8C1210005510B0 /* ReservationListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReservationListViewController.m; sourceTree = "<group>"; };
 		1D134E8B1A8C128E005510B0 /* ReservationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReservationCell.h; sourceTree = "<group>"; };
 		1D134E8C1A8C128E005510B0 /* ReservationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReservationCell.m; sourceTree = "<group>"; };
+		1D134E901A8D055D005510B0 /* HotelServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotelServiceTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +161,7 @@
 			children = (
 				1D134E441A896550005510B0 /* HotelCoreTests.m */,
 				1D134E421A896550005510B0 /* Supporting Files */,
+				1D134E901A8D055D005510B0 /* HotelServiceTests.m */,
 			);
 			path = HotelCoreTests;
 			sourceTree = "<group>";
@@ -357,6 +360,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D134E911A8D055D005510B0 /* HotelServiceTests.m in Sources */,
 				1D134E451A896550005510B0 /* HotelCoreTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
