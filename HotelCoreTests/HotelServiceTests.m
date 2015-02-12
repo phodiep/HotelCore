@@ -75,5 +75,43 @@
     
 }
 
+- (void)testAddNewHotel {
+    NSString *name = @"name";
+    NSString *location = @"here";
+    NSNumber *stars = @2;
+    
+    Hotel *newHotel = [self.hotelService addNewHotel:name atLocation:location starRating:stars];
+    XCTAssertNotNil(newHotel);
+    
+}
+
+- (void)testAddNewHotelWithoutStarRating {
+    NSString *name = @"name";
+    NSString *location = @"here";
+    
+    Hotel *newHotel = [self.hotelService addNewHotel:name atLocation:location starRating:nil];
+    XCTAssertNotNil(newHotel);
+    
+}
+
+- (void)testAddNewHotelMissingName {
+    NSString *location = @"here";
+    NSNumber *stars = @2;
+    
+    Hotel *newHotel = [self.hotelService addNewHotel:nil atLocation:location starRating:stars];
+    XCTAssertNil(newHotel);
+    
+}
+
+- (void)testAddNewHotelMissingLocation {
+    NSString *name = @"name";
+    NSNumber *stars = @2;
+    
+    Hotel *newHotel = [self.hotelService addNewHotel:name atLocation:nil starRating:stars];
+    XCTAssertNil(newHotel);
+    
+}
+
+
 
 @end

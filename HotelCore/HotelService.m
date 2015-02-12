@@ -45,6 +45,20 @@
     return self;
 }
 
+-(Hotel *)addNewHotel:(NSString*)name atLocation:(NSString*)location starRating:(NSNumber*)stars {
+    if (name == nil || location == nil) {
+        return nil;
+    }
+    
+    Hotel *hotel = [NSEntityDescription insertNewObjectForEntityForName:@"Hotel" inManagedObjectContext:self.context];
+    hotel.name = name;
+    hotel.location = location;
+    if (stars > 0) {
+        hotel.stars = stars;
+    }
+    return hotel;
+}
+
 -(Reservation *)bookReservationForGuest:(Guest *)guest forRoom:(Room *)room startDate:(NSDate *)startDate endDate:(NSDate *)endDate {
     if ([self datesAreValid:startDate endDate:endDate]) {
         Reservation *reservation = [NSEntityDescription insertNewObjectForEntityForName:@"Reservation" inManagedObjectContext:self.context];
@@ -65,14 +79,10 @@
 }
 
 -(BOOL)datesAreValid:(NSDate*)startDate endDate:(NSDate*)endDate {
-
-    if ([startDate compare:[NSDate date]] < 0) { //startDate has passed
-        return false;
-    }
-    if ([endDate   compare:[NSDate date]] < 0) { //endDate has passed
-        return false;
-    }
-    if ([startDate compare:endDate] > 0 ) {       //startDate is after endDate
+    if ([startDate timeIntervalSinceNow] <= -60 || //startDate has passed
+        [endDate   compare:[NSDate date]] < 0   || //endDate has passed
+        [startDate compare:endDate] > 0 )          //startDate is after endDate
+    {
         return false;
     }
     return true;

@@ -11,6 +11,7 @@
 #import "Reservation.h"
 #import "Room.h"
 #import "Guest.h"
+#import "Hotel.h"
 
 @interface HotelService : NSObject
 
@@ -18,6 +19,8 @@
 
 +(id)sharedService;
 -(instancetype)initForTesting;
+
+-(Hotel *)addNewHotel:(NSString*)name atLocation:(NSString*)location starRating:(NSNumber*)stars;
 
 -(Reservation*)bookReservationForGuest:(Guest*)guest forRoom:(Room*)room startDate:(NSDate*)startDate endDate:(NSDate*)endDate;
 
