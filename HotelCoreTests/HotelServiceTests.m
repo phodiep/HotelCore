@@ -16,6 +16,7 @@
 
 @interface HotelServiceTests : XCTestCase
 
+@property (strong, nonatomic) NSManagedObjectContext *context;
 @property (strong, nonatomic) HotelService *hotelService;
 @property (strong, nonatomic) Hotel *hotel;
 @property (strong, nonatomic) Room *room;
@@ -27,18 +28,19 @@
 
 - (void)setUp {
     [super setUp];
+    self.hotelService = [[HotelService alloc] initForTesting];
+    self.context = self.hotelService.coreDataStack.managedObjectContext;
 
-    self.hotel = [NSEntityDescription insertNewObjectForEntityForName:@"Hotel" inManagedObjectContext:self.hotelService.coreDataStack.managedObjectContext];
+    self.hotel = [NSEntityDescription insertNewObjectForEntityForName:@"Hotel" inManagedObjectContext:self.context];
     self.hotel.name = @"fake hotel";
     self.hotel.location = @"here";
-    self.hotel.stars = @1;
     
-    self.room = [NSEntityDescription insertNewObjectForEntityForName:@"Room" inManagedObjectContext:self.hotelService.coreDataStack.managedObjectContext];
+    self.room = [NSEntityDescription insertNewObjectForEntityForName:@"Room" inManagedObjectContext:self.context];
     self.room.number = @101;
     self.room.beds = @1;
     self.room.hotel = self.hotel;
     
-    self.guest = [NSEntityDescription insertNewObjectForEntityForName:@"Guest" inManagedObjectContext:self.hotelService.coreDataStack.managedObjectContext];
+    self.guest = [NSEntityDescription insertNewObjectForEntityForName:@"Guest" inManagedObjectContext:self.context];
     self.guest.firstname = @"first";
     self.guest.lastname = @"last";
     
@@ -61,6 +63,16 @@
     
     XCTAssertNotNil(reservation, @"init with valid dates, should not be nil");
 
+}
+
+- (void)testBookReservationForInvalidDates {
+    NSDate *earlierDate = [NSDate date];
+    NSDate *laterDate = [NSDate dateWithTimeInterval:(60 * 60 * 24 * 1) sinceDate: earlierDate];
+    
+    Reservation *reservation = [self.hotelService bookReservationForGuest:self.guest forRoom:self.room startDate:laterDate endDate:earlierDate];
+    
+    XCTAssertNil(reservation, @"invalid dates should return a nil reservation");
+    
 }
 
 

@@ -36,6 +36,7 @@
     self = [super init];
     if (self) {
         self.isTesting = true;
+        [self seedDatabaseIfNecessary];
     }
     return self;
 }

@@ -65,9 +65,17 @@
 }
 
 -(BOOL)datesAreValid:(NSDate*)startDate endDate:(NSDate*)endDate {
-    return ( [startDate compare:[NSDate date]] < 0 || //startDate has passed
-             [endDate   compare:[NSDate date]] < 0 || //endDate has passed
-             [startDate compare:endDate] > 0 );       //startDate is after endDate
+
+    if ([startDate compare:[NSDate date]] < 0) { //startDate has passed
+        return false;
+    }
+    if ([endDate   compare:[NSDate date]] < 0) { //endDate has passed
+        return false;
+    }
+    if ([startDate compare:endDate] > 0 ) {       //startDate is after endDate
+        return false;
+    }
+    return true;
 }
 
 
