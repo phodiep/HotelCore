@@ -73,10 +73,6 @@
 #pragma mark - UITableViewDelegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
  
-//    ReservationViewController *reservationVC = [ReservationViewController new];
-//    reservationVC.selectedRoom = self.rooms[indexPath.row];
-//    [self.navigationController pushViewController:reservationVC animated:true];
-
     Room *selectedRoom = self.rooms[indexPath.row];
     ReservationListViewController *reservationsVC = [ReservationListViewController new];
     reservationsVC.reservations = [selectedRoom.reservations allObjects];

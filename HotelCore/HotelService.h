@@ -21,6 +21,8 @@
 -(instancetype)initForTesting;
 
 -(Hotel *)addNewHotel:(NSString*)name atLocation:(NSString*)location starRating:(NSNumber*)stars;
+-(BOOL)removeHotel:(Hotel*)hotel;
+
 -(Room *)addNewRoom:(NSNumber *)number atHotel:(Hotel *)hotel withNumberOfBeds:(NSNumber *)beds rate:(NSNumber*)rate;
 
 -(Reservation*)bookReservationForGuest:(Guest*)guest forRoom:(Room*)room startDate:(NSDate*)startDate endDate:(NSDate*)endDate;

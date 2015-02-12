@@ -66,6 +66,17 @@
     return nil;
 }
 
+-(BOOL)removeHotel:(Hotel*)hotel {
+    [self.context deleteObject:hotel];
+    
+    NSError *saveError;
+    [self.context save:&saveError];
+    if (saveError == nil) {
+        return true;
+    }
+    return false;
+}
+
 -(Room *)addNewRoom:(NSNumber *)number atHotel:(Hotel *)hotel withNumberOfBeds:(NSNumber *)beds rate:(NSNumber*)rate {
     if (number != nil && hotel != nil && beds != nil) {
         Room *room = [NSEntityDescription insertNewObjectForEntityForName:@"Room" inManagedObjectContext:self.context];

@@ -112,6 +112,19 @@
     
 }
 
+- (void)testRemoveHotel {
+    NSManagedObjectID *hotelId = [self.hotel objectID];
+    NSManagedObject *hotel = [self.context existingObjectWithID:hotelId error:nil];
+
+    XCTAssertNotNil(hotel);
+    
+    [self.hotelService removeHotel:self.hotel];
+    
+    NSManagedObject *removedHotel = [self.context existingObjectWithID:hotelId error:nil];
+    
+    XCTAssertNil(removedHotel);
+}
+
 - (void)testAddNewRoom {
     NSNumber *number = @1;
     NSNumber *beds = @2;
