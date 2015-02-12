@@ -7,11 +7,11 @@
 //
 
 #import "AvailablityViewController.h"
-#import "AppDelegate.h"
 #import "Hotel.h"
 #import "Reservation.h"
 #import "Room.h"
 #import "AvailableRoomsViewController.h"
+#import "HotelService.h"
 
 #pragma mark - Interface
 @interface AvailablityViewController ()
@@ -81,9 +81,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    AppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
-    self.context = appDelegate.managedObjectContext;
     self.title = @"Search Available Rooms";
+    self.context = [[[HotelService sharedService] coreDataStack] managedObjectContext];
+    
 }
 
 #pragma mark - autolayout setup
@@ -158,13 +158,7 @@
     NSDate *endDate = self.endDatePicker.date;
     
     //get list of reservations overlapping w/ start/end dates
-    NSPredicate *reservationPredicate = [NSPredicate predicateWithFormat:
-                                         @"room.hotel.name MATCHES %@ AND ((startDate <= %@ AND endDate >= %@ AND endDate <= %@) OR (startDate >= %@ AND endDate <= endDate) OR (startDate >= %@ AND startDate <= %@ AND endDate >= %@) OR (startDate <= %@ AND endDate >= %@))",
-                                         selectedHotel,
-                                         startDate, startDate, endDate,
-                                         startDate, endDate,
-                                         startDate, endDate, endDate,
-                                         startDate, endDate];
+    NSPredicate *reservationPredicate = [NSPredicate predicateWithFormat:@"room.hotel.name MATCHES %@ AND startDate <= %@ AND endDate >= %@", selectedHotel, endDate, startDate];
     NSArray *allOverlappingReservations = [self applyPredicate:reservationPredicate toFetchEntity:@"Reservation"];
     
     NSMutableArray *reservedRooms = [NSMutableArray new];
@@ -175,11 +169,6 @@
     NSPredicate *roomPredicate = [NSPredicate predicateWithFormat:@"self.hotel.name MATCHES %@ AND NOT (self IN %@)",selectedHotel, reservedRooms];
     NSArray *availableRooms = [self applyPredicate:roomPredicate toFetchEntity:@"Room"];
     
-//    for (Room *room in availableRooms) {
-//        NSLog(@"%@", room.number);
-//    }
-//    
-//    NSLog(@"%lu", (unsigned long)[availableRooms count]);
     return availableRooms;
 }
 

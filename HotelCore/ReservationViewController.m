@@ -9,6 +9,7 @@
 #import "ReservationViewController.h"
 #import "Reservation.h"
 #import "Guest.h"
+#import "HotelService.h"
 
 #pragma mark - Interface
 @interface ReservationViewController ()
@@ -17,6 +18,7 @@
 @property (strong, nonatomic) UIDatePicker *endDatePicker;
 @property (strong, nonatomic) UIButton *reservationButton;
 @property (strong, nonatomic) NSMutableDictionary *views;
+@property (strong, nonatomic) HotelService *hotelService;
 
 @end
 
@@ -65,6 +67,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.hotelService = [HotelService sharedService];
     self.title = [NSString stringWithFormat:@"Rm %@ Reservation", self.selectedRoom.number];
     self.view.backgroundColor = [UIColor lightGrayColor];
 }
@@ -95,6 +98,7 @@
         [self alertUserOfBadDateRange];
     } else {
         [self saveReservationToRoom];
+        
         [self.navigationController popViewControllerAnimated:true];
     }
 }
@@ -110,20 +114,8 @@
     Guest *guest = [NSEntityDescription insertNewObjectForEntityForName:@"Guest" inManagedObjectContext:self.selectedRoom.managedObjectContext];
     guest.firstname = @"first";
     guest.lastname = @"last";
-    Reservation *reservation = [NSEntityDescription insertNewObjectForEntityForName:@"Reservation" inManagedObjectContext:self.selectedRoom.managedObjectContext];
-    reservation.startDate = self.startDatePicker.date;
-    reservation.endDate = self.endDatePicker.date;
-    reservation.room = self.selectedRoom;
-    reservation.guest = guest;
-    [self.selectedRoom addReservationsObject:reservation];
     
-    NSError *saveError;
-    [self.selectedRoom.managedObjectContext save:&saveError];
-    
-    if (saveError != nil) {
-        NSLog(@"%@", saveError.localizedDescription);
-    }
-
+    [self.hotelService bookReservationForGuest:guest forRoom:self.selectedRoom startDate:self.startDatePicker.date endDate:self.endDatePicker.date];
     
 }
 

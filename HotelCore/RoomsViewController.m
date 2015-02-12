@@ -10,6 +10,8 @@
 #import "RoomCell.h"
 #import "Room.h"
 #import "ReservationViewController.h"
+#import "ReservationListViewController.h"
+#import "Reservation.h"
 
 #pragma mark - Interface
 @interface RoomsViewController () <UITableViewDataSource, UITableViewDelegate>
@@ -70,12 +72,15 @@
 
 #pragma mark - UITableViewDelegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"%@", [self.rooms[indexPath.row] number]);
  
-    ReservationViewController *reservationVC = [ReservationViewController new];
-    reservationVC.selectedRoom = self.rooms[indexPath.row];
-    [self.navigationController pushViewController:reservationVC animated:true];
-    
+//    ReservationViewController *reservationVC = [ReservationViewController new];
+//    reservationVC.selectedRoom = self.rooms[indexPath.row];
+//    [self.navigationController pushViewController:reservationVC animated:true];
+
+    Room *selectedRoom = self.rooms[indexPath.row];
+    ReservationListViewController *reservationsVC = [ReservationListViewController new];
+    reservationsVC.reservations = [selectedRoom.reservations allObjects];
+    [self.navigationController pushViewController:reservationsVC animated:true];
 }
 
 @end

@@ -46,23 +46,29 @@
 }
 
 -(Reservation *)bookReservationForGuest:(Guest *)guest forRoom:(Room *)room startDate:(NSDate *)startDate endDate:(NSDate *)endDate {
-    Reservation *reservation = [NSEntityDescription insertNewObjectForEntityForName:@"Reservation" inManagedObjectContext:self.context];
-    reservation.startDate = startDate;
-    reservation.endDate = endDate;
-    reservation.room = room;
-    reservation.guest = guest;
+    if ([self datesAreValid:startDate endDate:endDate]) {
+        Reservation *reservation = [NSEntityDescription insertNewObjectForEntityForName:@"Reservation" inManagedObjectContext:self.context];
+        reservation.startDate = startDate;
+        reservation.endDate = endDate;
+        reservation.room = room;
+        reservation.guest = guest;
     
-    NSError *saveError;
-    [self.context save:&saveError];
+        NSError *saveError;
+        [self.context save:&saveError];
     
-    if (saveError == nil) {
-        return nil;
+        if (saveError == nil) {
+            return reservation;
+        }
     }
+    return nil;
     
-    return reservation;
 }
 
-
+-(BOOL)datesAreValid:(NSDate*)startDate endDate:(NSDate*)endDate {
+    return ( [startDate compare:[NSDate date]] < 0 || //startDate has passed
+             [endDate   compare:[NSDate date]] < 0 || //endDate has passed
+             [startDate compare:endDate] > 0 );       //startDate is after endDate
+}
 
 
 @end
