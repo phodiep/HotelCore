@@ -54,18 +54,18 @@
 
     
     //---FetchedResultsController
-//    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Reservation"];
-//    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"", self.selectedRoom];
-//    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"startDate" ascending:true];
-//    fetchRequest.predicate = predicate;
-//    fetchRequest.sortDescriptors = @[sortDescriptor];
-//    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.context sectionNameKeyPath:nil cacheName:nil];
-//    self.fetchedResultsController.delegate = self;
-//    NSError *fetchError;
-//    [self.fetchedResultsController performFetch:&fetchError];
-//    if (fetchError) {
-//        NSLog(@"%@", fetchError);
-//    }
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Reservation"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"room == %@", self.selectedRoom];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"startDate" ascending:true];
+    fetchRequest.predicate = predicate;
+    fetchRequest.sortDescriptors = @[sortDescriptor];
+    self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.context sectionNameKeyPath:nil cacheName:nil];
+    self.fetchedResultsController.delegate = self;
+    NSError *fetchError;
+    [self.fetchedResultsController performFetch:&fetchError];
+    if (fetchError) {
+        NSLog(@"%@", fetchError);
+    }
     
 }
 

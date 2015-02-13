@@ -24,7 +24,9 @@
 -(BOOL)removeHotel:(Hotel*)hotel;
 
 -(Room *)addNewRoom:(NSNumber *)number atHotel:(Hotel *)hotel withNumberOfBeds:(NSNumber *)beds rate:(NSNumber*)rate;
+-(BOOL)removeRoom:(Room*)room;
 
 -(Reservation*)bookReservationForGuest:(Guest*)guest forRoom:(Room*)room startDate:(NSDate*)startDate endDate:(NSDate*)endDate;
+-(BOOL)removeReservation:(Reservation*)reservation;
 
 @end

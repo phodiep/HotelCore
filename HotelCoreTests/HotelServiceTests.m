@@ -75,6 +75,25 @@
     
 }
 
+- (void)testRemoveReservation {
+    NSDate *startDate = [NSDate date];
+    NSDate *endDate = [NSDate dateWithTimeInterval:(60 * 60 * 24 * 3) sinceDate:startDate];
+    
+    Reservation *reservation = [self.hotelService bookReservationForGuest:self.guest forRoom:self.room startDate:startDate endDate:endDate];
+    
+    XCTAssertNotNil(reservation, @"init with valid dates, should not be nil");
+
+    [self.hotelService removeReservation:reservation];
+    
+    NSError *error;
+    NSManagedObjectID *reservationID = [reservation objectID];
+    NSManagedObject *removedReservation = [self.context existingObjectWithID:reservationID error:&error];
+    
+    XCTAssertNil(removedReservation);
+
+    
+}
+
 - (void)testAddNewHotel {
     NSString *name = @"name";
     NSString *location = @"here";
@@ -133,6 +152,17 @@
     Room *room = [self.hotelService addNewRoom:number atHotel:self.hotel withNumberOfBeds:beds rate:rate];
     
     XCTAssertNotNil(room);
+}
+
+- (void)testRemoveRoom {
+    NSManagedObjectID *roomID = [self.room objectID];
+    NSManagedObject *room = [self.context existingObjectWithID:roomID error:nil];
+    XCTAssertNotNil(room);
+    
+    [self.hotelService removeRoom:self.room];
+    NSManagedObject *removedRoom = [self.context existingObjectWithID:roomID error:nil];
+    XCTAssertNil(removedRoom);
+    
 }
 
 - (void)testAddNewRoomWithoutRate {

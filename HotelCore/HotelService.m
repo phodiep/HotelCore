@@ -97,6 +97,18 @@
     return nil;
 }
 
+-(BOOL)removeRoom:(Room*)room {
+    [self.context deleteObject:room];
+    
+    NSError *saveError;
+    [self.context save:&saveError];
+    if(saveError == nil) {
+        return true;
+    }
+    return false;
+}
+
+
 -(Reservation *)bookReservationForGuest:(Guest *)guest forRoom:(Room *)room startDate:(NSDate *)startDate endDate:(NSDate *)endDate {
     if ([self datesAreValid:startDate endDate:endDate]) {
         Reservation *reservation = [NSEntityDescription insertNewObjectForEntityForName:@"Reservation" inManagedObjectContext:self.context];
@@ -116,10 +128,21 @@
     
 }
 
+-(BOOL)removeReservation:(Reservation*)reservation {
+    [self.context deleteObject:reservation];
+    
+    NSError *saveError;
+    [self.context save:&saveError];
+    if(saveError == nil) {
+        return true;
+    }
+    return false;
+}
+
 -(BOOL)datesAreValid:(NSDate*)startDate endDate:(NSDate*)endDate {
-    if ([startDate timeIntervalSinceNow] <= -60 || //startDate has passed
-        [endDate   compare:[NSDate date]] < 0   || //endDate has passed
-        [startDate compare:endDate] > 0 )          //startDate is after endDate
+    if ([startDate timeIntervalSinceNow] <= -60 ||  //startDate has passed
+        [endDate   timeIntervalSinceNow] <= -60 ||  //endDate has passed
+        [startDate compare:endDate] >= 0 )          //startDate is after endDate
     {
         return false;
     }
