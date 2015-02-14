@@ -21,6 +21,7 @@
 @property (strong, nonatomic) NSArray *sortedReservations;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *context;
+@property (strong, nonatomic) HotelService *hotelService;
 
 @end
 
@@ -39,7 +40,8 @@
     [super viewDidLoad];
 
     self.title = @"Current Reservations";
-    self.context = [[[HotelService sharedService] coreDataStack] managedObjectContext];
+    self.hotelService = [HotelService sharedService];
+    self.context = [[self.hotelService coreDataStack] managedObjectContext];
     
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -133,6 +135,21 @@
     
 //    [self configureCell:cell atIndexPath:indexPath];
     return cell;
+}
+
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    //TODO - fix this!!!
+    //bug... reload after removeReservation not working
+//    return YES;
+    return NO;
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        Reservation *selectedReservation = self.sortedReservations[indexPath.row];
+        [self.hotelService removeReservation:selectedReservation];
+        [self.tableView reloadData];
+    }
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

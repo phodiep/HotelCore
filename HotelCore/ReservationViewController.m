@@ -98,7 +98,7 @@
         [self alertUserOfBadDateRange];
     } else {
         [self saveReservationToRoom];
-        
+        [self.navigationController popViewControllerAnimated:true];
         [self.navigationController popViewControllerAnimated:true];
     }
 }
