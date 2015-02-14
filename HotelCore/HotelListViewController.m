@@ -56,7 +56,9 @@
     NSError *fetchError;
     NSArray *results = [self.context executeFetchRequest:fetchRequest error:&fetchError];
     if (fetchError == nil) {
-        self.hotels = results;
+        NSSortDescriptor *valueDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+        NSArray *descriptors = [NSArray arrayWithObject:valueDescriptor];
+        self.hotels = [results sortedArrayUsingDescriptors:descriptors];
         [self.tableView reloadData];
     }
 }
@@ -126,16 +128,13 @@
 }
 
 - (void)setupHotelAlert:(NSString*)name location:(NSString*)location {
-
     self.hotelAlert = [[UIAlertView alloc] initWithTitle:@"New Hotel" message:@"Name and Location are required" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add New Hotel",nil];
     self.hotelAlert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
     UITextField *nameField = [self.hotelAlert textFieldAtIndex:0];
     nameField.placeholder = @"Enter name of hotel";
     UITextField *locationField = [self.hotelAlert textFieldAtIndex:1];
     locationField.placeholder = @"Enter location";
-    [[self.hotelAlert textFieldAtIndex:1]setSecureTextEntry:NO];
-
-    
+    [[self.hotelAlert textFieldAtIndex:1] setSecureTextEntry:NO];
 }
 
 -(void)alertUserOfMissingInfoForNewHotel:(NSString*)name location:(NSString*)location {
