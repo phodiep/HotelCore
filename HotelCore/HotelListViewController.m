@@ -13,11 +13,13 @@
 #import "HotelService.h"
 
 #pragma mark - Interface
-@interface HotelListViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface HotelListViewController () <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
-@property (strong, nonatomic) UITableView* tableView;
+@property (strong, nonatomic) HotelService *hotelService;
+@property (strong, nonatomic) UITableView *tableView;
 @property (weak, nonatomic) NSManagedObjectContext *context;
 @property (strong, nonatomic) UIBarButtonItem *addHotelButton;
+@property (strong, nonatomic) UIAlertView *hotelAlert;
 
 @end
 
@@ -37,7 +39,8 @@
     [super viewDidLoad];
     
     self.title = @"Hotels";
-    self.context = [[[HotelService sharedService] coreDataStack] managedObjectContext];
+    self.hotelService = [HotelService sharedService];
+    self.context = [[self.hotelService coreDataStack] managedObjectContext];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self.tableView registerClass:HotelCell.class forCellReuseIdentifier:@"HOTEL_CELL"];
@@ -78,19 +81,78 @@
     return 45;
 }
 
+
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    RoomsViewController *roomVC = [RoomsViewController new];
+    RoomsViewController *roomVC = [[RoomsViewController alloc] init];
     roomVC.selectedHotel = self.hotels[indexPath.row];
     [self.navigationController pushViewController:roomVC animated:true];
 }
 
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSString *name = [[alertView textFieldAtIndex:0] text];
+    NSString *location = [[alertView textFieldAtIndex:1] text];
+    
+    if (buttonIndex == 1) { //pressed continue
+        if ([name isEqualToString:@""] || [location isEqualToString:@""]) {
+            [self alertUserOfMissingInfoForNewHotel:name location:location];
+        } else {
+            [self.hotelService addNewHotel:name atLocation:location starRating:nil];
+            [self fetchListOfHotels];
+        }
+    }
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        Hotel *selectedHotel = self.hotels[indexPath.row];
+        [self.hotelService removeHotel:selectedHotel];
+        [self fetchListOfHotels];
+    }
+}
+
+
 #pragma mark - Button Actions
 - (void)addNewHotel:(UIBarButtonItem*)sender {
-    //todo
-    NSLog(@"new hotel - not yet implemented");
+    [self setupHotelAlert:nil location:nil];
+    [self.hotelAlert show];
+}
+
+- (void)setupHotelAlert:(NSString*)name location:(NSString*)location {
+
+    self.hotelAlert = [[UIAlertView alloc] initWithTitle:@"New Hotel" message:@"Name and Location are required" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Add New Hotel",nil];
+    self.hotelAlert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
+    UITextField *nameField = [self.hotelAlert textFieldAtIndex:0];
+    nameField.placeholder = @"Enter name of hotel";
+    UITextField *locationField = [self.hotelAlert textFieldAtIndex:1];
+    locationField.placeholder = @"Enter location";
+    [[self.hotelAlert textFieldAtIndex:1]setSecureTextEntry:NO];
+
     
 }
+
+-(void)alertUserOfMissingInfoForNewHotel:(NSString*)name location:(NSString*)location {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Unable to Add Hotel" message:@"Both Name and Location of the new hotel are required." preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okOption = [UIAlertAction actionWithTitle:@"Continue" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self setupHotelAlert:name location:location];
+        
+        [[self.hotelAlert textFieldAtIndex:0] setText:name];
+        [[self.hotelAlert textFieldAtIndex:1] setText:location];
+        
+        [self.hotelAlert show];
+    }];
+    [alertController addAction:okOption];
+    [self presentViewController:alertController animated:true completion:nil];
+}
+
+
+
 
 @end

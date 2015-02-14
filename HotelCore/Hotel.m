@@ -17,4 +17,5 @@
 @dynamic stars;
 @dynamic rooms;
 
+
 @end
