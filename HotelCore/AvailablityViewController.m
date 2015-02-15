@@ -171,37 +171,45 @@
     NSDate *startDate = [[NSDate alloc] initWithTimeInterval:-60 sinceDate:self.startDatePicker.date];
     NSDate *endDate = [[NSDate alloc] initWithTimeInterval:60 sinceDate:self.endDatePicker.date];
 
+    NSString *selectedHotelName;
+    if (self.hotelSegmentControl.selectedSegmentIndex >= 0) {
+        selectedHotelName = [self.hotelSegmentControl titleForSegmentAtIndex:self.hotelSegmentControl.selectedSegmentIndex];
+    } else {
+        selectedHotelName = nil;
+    }
+    
+    NSArray *overlappingReservations = [self searchForExistingOverlappingReservations:selectedHotelName fromStartDate:startDate toEndDate:endDate];
+    
+    NSMutableArray *reservedRooms = [NSMutableArray new];
+    for (Reservation *reservation in overlappingReservations) {
+        [reservedRooms addObject:reservation.room];
+    }
+
+    return [self availableRooms:selectedHotelName excludingReservedRooms:reservedRooms];
+}
+
+- (NSArray*)availableRooms:(NSString*)selectedHotelName excludingReservedRooms:(NSArray*)reservedRooms {
+    NSPredicate *roomPredicate;
+    if (selectedHotelName != nil) {
+        roomPredicate = [NSPredicate predicateWithFormat:@"self.hotel.name MATCHES %@ AND NOT (self IN %@)", selectedHotelName, reservedRooms];
+    } else {
+        roomPredicate = [NSPredicate predicateWithFormat:@"NOT (self IN %@)", reservedRooms];
+    }
+    
+    return [self applyPredicate:roomPredicate toFetchEntity:@"Room"];
+}
+
+- (NSArray*)searchForExistingOverlappingReservations:(NSString*)selectedHotelName fromStartDate:(NSDate*)startDate toEndDate:(NSDate*)endDate {
     NSPredicate *reservationPredicate;
-    if (self.hotelSegmentControl.selectedSegmentIndex) {
-        NSString *selectedHotel = [self.hotelSegmentControl titleForSegmentAtIndex:self.hotelSegmentControl.selectedSegmentIndex];
-        reservationPredicate = [NSPredicate predicateWithFormat:@"room.hotel.name MATCHES %@ AND startDate <= %@ AND endDate >= %@", selectedHotel, endDate, startDate];
+
+    if (selectedHotelName != nil) {
+        reservationPredicate = [NSPredicate predicateWithFormat:@"room.hotel.name MATCHES %@ AND startDate <= %@ AND endDate >= %@", selectedHotelName, endDate, startDate];
     } else {
         reservationPredicate = [NSPredicate predicateWithFormat:@"startDate <= %@ AND endDate >= %@", endDate, startDate];
     }
     
+    return [self applyPredicate:reservationPredicate toFetchEntity:@"Reservation"];
 
-    
-    //get list of reservations overlapping w/ start/end dates
-//    NSPredicate *reservationPredicate = [NSPredicate predicateWithFormat:@"room.hotel.name MATCHES %@ AND startDate <= %@ AND endDate >= %@", selectedHotel, endDate, startDate];
-    NSArray *allOverlappingReservations = [self applyPredicate:reservationPredicate toFetchEntity:@"Reservation"];
-
-    NSMutableArray *reservedRooms = [NSMutableArray new];
-    for (Reservation *reservation in allOverlappingReservations) {
-        [reservedRooms addObject:reservation.room];
-    }
-    
-    NSPredicate *roomPredicate;
-    if (self.hotelSegmentControl.selectedSegmentIndex) {
-        NSString *selectedHotel = [self.hotelSegmentControl titleForSegmentAtIndex:self.hotelSegmentControl.selectedSegmentIndex];
-        roomPredicate = [NSPredicate predicateWithFormat:@"self.hotel.name MATCHES %@ AND NOT (self IN %@)",selectedHotel, reservedRooms];
-    } else {
-        roomPredicate = [NSPredicate predicateWithFormat:@"NOT (self IN %@)", reservedRooms];
-    }
-
-    
-    NSArray *availableRooms = [self applyPredicate:roomPredicate toFetchEntity:@"Room"];
-    
-    return availableRooms;
 }
 
 - (void)alertUserOfBadDateRange {
