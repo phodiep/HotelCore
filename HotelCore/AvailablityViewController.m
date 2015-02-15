@@ -49,11 +49,14 @@
     self.startDatePicker = [[UIDatePicker alloc] init];
     self.startDatePicker.datePickerMode = UIDatePickerModeDate;
     [self.startDatePicker setMinimumDate:[NSDate date]];
+    [self.startDatePicker addTarget:self action:@selector(startDateChanged:) forControlEvents:UIControlEventValueChanged];
     
     self.endDatePicker = [[UIDatePicker alloc] init];
     self.endDatePicker.datePickerMode = UIDatePickerModeDate;
     [self.endDatePicker setMinimumDate:[NSDate date]];
-
+    self.endDatePicker.date = [[NSDate alloc] initWithTimeInterval:(60 * 60 * 24) sinceDate:[NSDate date]];
+    [self.endDatePicker addTarget:self action:@selector(endDateChanged:) forControlEvents:UIControlEventValueChanged];
+    
 //        self.hotelSegmentControl = [[UISegmentedControl alloc] initWithItems:[self getNamesOfHotels]];
     self.hotelSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Fancy Estates", @"Solid Stay", @"Decent Inn", @"Okay Motel"]];
     self.hotelSegmentControl.frame = CGRectMake(0, 0, 300, 50);
@@ -72,8 +75,6 @@
 
     [rootView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:
                               @"V:|-75-[hotelSeg]-8-[startLabel][startDate]-8-[endLabel]-[endDate]-8-[searchButton]-16-|" options:NSLayoutFormatAlignAllCenterX metrics:nil views:self.views]];
-
-    
     
     self.view = rootView;
 }
@@ -85,6 +86,20 @@
     self.context = [[[HotelService sharedService] coreDataStack] managedObjectContext];
     
 }
+
+#pragma mark - UIDatePicker change
+- (void)startDateChanged:(UIDatePicker*)sender {
+    if ([self.startDatePicker.date compare:self.endDatePicker.date] > 0 ) {
+        self.endDatePicker.date = [[NSDate alloc] initWithTimeInterval:(60 * 60 * 24) sinceDate:sender.date];
+    }
+}
+
+- (void)endDateChanged:(UIDatePicker*)sender {
+    if ([self.startDatePicker.date compare:self.endDatePicker.date] > 0 ) {
+        self.startDatePicker.date = sender.date;
+    }
+}
+
 
 #pragma mark - autolayout setup
 - (void)setupForAutolayout:(id)object addToView:(UIView *)view keyForViewsDictionary:(id)key {
@@ -141,7 +156,7 @@
         NSArray *availableRooms = [self filterForRoom];
         
         if ([availableRooms count] > 0 ) {
-            AvailableRoomsViewController *availableVC = [AvailableRoomsViewController new];
+            AvailableRoomsViewController *availableVC = [[AvailableRoomsViewController alloc] init];
             availableVC.rooms = availableRooms;
             availableVC.setStartDate = startDate;
             availableVC.setEndDate = endDate;
@@ -154,13 +169,13 @@
 
 - (NSArray*)filterForRoom {
     NSString *selectedHotel = [self.hotelSegmentControl titleForSegmentAtIndex:self.hotelSegmentControl.selectedSegmentIndex];
-    NSDate *startDate = self.startDatePicker.date;
-    NSDate *endDate = self.endDatePicker.date;
-    
+    NSDate *startDate = [[NSDate alloc] initWithTimeInterval:-60 sinceDate:self.startDatePicker.date];
+    NSDate *endDate = [[NSDate alloc] initWithTimeInterval:60 sinceDate:self.endDatePicker.date];
+
     //get list of reservations overlapping w/ start/end dates
     NSPredicate *reservationPredicate = [NSPredicate predicateWithFormat:@"room.hotel.name MATCHES %@ AND startDate <= %@ AND endDate >= %@", selectedHotel, endDate, startDate];
     NSArray *allOverlappingReservations = [self applyPredicate:reservationPredicate toFetchEntity:@"Reservation"];
-    
+
     NSMutableArray *reservedRooms = [NSMutableArray new];
     for (Reservation *reservation in allOverlappingReservations) {
         [reservedRooms addObject:reservation.room];
