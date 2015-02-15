@@ -16,11 +16,17 @@
 #pragma mark - Interface
 @interface AvailablityViewController ()
 
+@property (strong, nonatomic) HotelService *hotelService;
 @property (strong, nonatomic) NSManagedObjectContext *context;
 @property (strong, nonatomic) UIDatePicker *startDatePicker;
 @property (strong, nonatomic) UIDatePicker *endDatePicker;
 @property (strong, nonatomic) UISegmentedControl *hotelSegmentControl;
 @property (strong, nonatomic) UIButton *searchButton;
+
+@property (strong, nonatomic) NSArray *listOfHotels;
+@property (strong, nonatomic) NSMutableArray *listOfHotelNames;
+
+//@property (strong, nonatomic) NSMutableArray *hotelListViews;
 
 @property (strong, nonatomic) NSMutableDictionary *views;
 
@@ -31,6 +37,9 @@
 
 #pragma mark - UIViewController Lifecycle
 - (void)loadView {
+    self.hotelService = [HotelService sharedService];
+    self.context = [[self.hotelService coreDataStack] managedObjectContext];
+    
     UIView* rootView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen]bounds]];
     rootView.backgroundColor = [UIColor lightGrayColor];
     self.views = [[NSMutableDictionary alloc] init];
@@ -56,9 +65,8 @@
     [self.endDatePicker setMinimumDate:[NSDate date]];
     self.endDatePicker.date = [[NSDate alloc] initWithTimeInterval:(60 * 60 * 24) sinceDate:[NSDate date]];
     [self.endDatePicker addTarget:self action:@selector(endDateChanged:) forControlEvents:UIControlEventValueChanged];
-    
-//        self.hotelSegmentControl = [[UISegmentedControl alloc] initWithItems:[self getNamesOfHotels]];
-    self.hotelSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Fancy Estates", @"Solid Stay", @"Decent Inn", @"Okay Motel"]];
+
+    self.hotelSegmentControl = [[UISegmentedControl alloc] initWithItems:[self getNamesOfHotels]];
     self.hotelSegmentControl.frame = CGRectMake(0, 0, 300, 50);
     [self.hotelSegmentControl addTarget:self action:@selector(hotelSelected:) forControlEvents:UIControlEventValueChanged];
     self.hotelSegmentControl.tintColor = [UIColor blackColor];
@@ -83,7 +91,6 @@
     [super viewDidLoad];
 
     self.title = @"Search Available Rooms";
-    self.context = [[[HotelService sharedService] coreDataStack] managedObjectContext];
     
 }
 
@@ -113,16 +120,15 @@
 - (NSArray*)getNamesOfHotels {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Hotel"];
     NSError *fetchError;
-    NSArray *results = [self.context executeFetchRequest:fetchRequest error:&fetchError];
+    self.listOfHotels = [self.context executeFetchRequest:fetchRequest error:&fetchError];
     
-    NSMutableArray *hotelNames;
+    self.listOfHotelNames = [[NSMutableArray alloc] init];
     if (fetchError == nil) {
-        NSArray *hotels = results;
-        for (Hotel *hotel in hotels) {
-            [hotelNames addObject:[NSString stringWithFormat:@"%@",[hotel name]]];
+        for (Hotel *hotel in self.listOfHotels) {
+            [self.listOfHotelNames addObject:[NSString stringWithFormat:@"%@", [hotel name]]];
         }
     }
-    return hotelNames;
+    return self.listOfHotelNames;
 }
 
 - (void)hotelSelected:(UISegmentedControl *)segment {
