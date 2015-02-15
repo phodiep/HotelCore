@@ -168,12 +168,21 @@
 }
 
 - (NSArray*)filterForRoom {
-    NSString *selectedHotel = [self.hotelSegmentControl titleForSegmentAtIndex:self.hotelSegmentControl.selectedSegmentIndex];
     NSDate *startDate = [[NSDate alloc] initWithTimeInterval:-60 sinceDate:self.startDatePicker.date];
     NSDate *endDate = [[NSDate alloc] initWithTimeInterval:60 sinceDate:self.endDatePicker.date];
 
+    NSPredicate *reservationPredicate;
+    if (self.hotelSegmentControl.selectedSegmentIndex) {
+        NSString *selectedHotel = [self.hotelSegmentControl titleForSegmentAtIndex:self.hotelSegmentControl.selectedSegmentIndex];
+        reservationPredicate = [NSPredicate predicateWithFormat:@"room.hotel.name MATCHES %@ AND startDate <= %@ AND endDate >= %@", selectedHotel, endDate, startDate];
+    } else {
+        reservationPredicate = [NSPredicate predicateWithFormat:@"startDate <= %@ AND endDate >= %@", endDate, startDate];
+    }
+    
+
+    
     //get list of reservations overlapping w/ start/end dates
-    NSPredicate *reservationPredicate = [NSPredicate predicateWithFormat:@"room.hotel.name MATCHES %@ AND startDate <= %@ AND endDate >= %@", selectedHotel, endDate, startDate];
+//    NSPredicate *reservationPredicate = [NSPredicate predicateWithFormat:@"room.hotel.name MATCHES %@ AND startDate <= %@ AND endDate >= %@", selectedHotel, endDate, startDate];
     NSArray *allOverlappingReservations = [self applyPredicate:reservationPredicate toFetchEntity:@"Reservation"];
 
     NSMutableArray *reservedRooms = [NSMutableArray new];
@@ -181,7 +190,15 @@
         [reservedRooms addObject:reservation.room];
     }
     
-    NSPredicate *roomPredicate = [NSPredicate predicateWithFormat:@"self.hotel.name MATCHES %@ AND NOT (self IN %@)",selectedHotel, reservedRooms];
+    NSPredicate *roomPredicate;
+    if (self.hotelSegmentControl.selectedSegmentIndex) {
+        NSString *selectedHotel = [self.hotelSegmentControl titleForSegmentAtIndex:self.hotelSegmentControl.selectedSegmentIndex];
+        roomPredicate = [NSPredicate predicateWithFormat:@"self.hotel.name MATCHES %@ AND NOT (self IN %@)",selectedHotel, reservedRooms];
+    } else {
+        roomPredicate = [NSPredicate predicateWithFormat:@"NOT (self IN %@)", reservedRooms];
+    }
+
+    
     NSArray *availableRooms = [self applyPredicate:roomPredicate toFetchEntity:@"Room"];
     
     return availableRooms;

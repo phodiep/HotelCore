@@ -55,8 +55,8 @@
     
     Room *room = self.sortedRooms[indexPath.row];
     
-    cell.nameLabel.text = [[room number] stringValue];
-    cell.bedsLabel.text = [[room beds] stringValue];
+    cell.nameLabel.text = [NSString stringWithFormat:@"Room# %@", [[room number] stringValue]];
+    cell.bedsLabel.text = [NSString stringWithFormat:@"%@ bed(s)", [[room beds] stringValue]];
     
     return cell;
 }
