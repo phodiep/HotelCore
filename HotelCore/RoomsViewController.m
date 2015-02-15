@@ -87,7 +87,8 @@
  
     Room *selectedRoom = self.rooms[indexPath.row];
     ReservationListViewController *reservationsVC = [ReservationListViewController new];
-    reservationsVC.reservations = [selectedRoom.reservations allObjects];
+    reservationsVC.selectedRoom = selectedRoom;
+//    reservationsVC.reservations = [selectedRoom.reservations allObjects];
     [self.navigationController pushViewController:reservationsVC animated:true];
 }
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {

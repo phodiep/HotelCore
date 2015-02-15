@@ -47,20 +47,15 @@
     self.tableView.delegate = self;
     [self.tableView registerClass:ReservationCell.class forCellReuseIdentifier:@"RESERVATION_CELL"];
 
-    NSSortDescriptor *hotelDescriptor = [[NSSortDescriptor alloc] initWithKey:@"room.hotel.name" ascending:YES];
-    NSSortDescriptor *roomDescriptor = [[NSSortDescriptor alloc] initWithKey:@"room.number" ascending:YES];
-    NSSortDescriptor *startDateDescriptor = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:YES];
-    
-    NSArray *descriptors = @[hotelDescriptor, roomDescriptor, startDateDescriptor];
-    self.sortedReservations = [self.reservations sortedArrayUsingDescriptors:descriptors];
-
+//    [self reloadSortedReservations];
     
     //---FetchedResultsController
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Reservation"];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"room == %@", self.selectedRoom];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"room.number == %@", self.selectedRoom.number];
+    NSSortDescriptor *sortRoomDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"room.number" ascending:YES];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"startDate" ascending:true];
     fetchRequest.predicate = predicate;
-    fetchRequest.sortDescriptors = @[sortDescriptor];
+    fetchRequest.sortDescriptors = @[sortRoomDescriptor, sortDescriptor];
     self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.context sectionNameKeyPath:nil cacheName:nil];
     self.fetchedResultsController.delegate = self;
     NSError *fetchError;
@@ -68,6 +63,16 @@
     if (fetchError) {
         NSLog(@"%@", fetchError);
     }
+}
+
+-(void)reloadSortedReservations {
+    NSSortDescriptor *hotelDescriptor = [[NSSortDescriptor alloc] initWithKey:@"room.hotel.name" ascending:YES];
+    NSSortDescriptor *roomDescriptor = [[NSSortDescriptor alloc] initWithKey:@"room.number" ascending:YES];
+    NSSortDescriptor *startDateDescriptor = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:YES];
+    
+    NSArray *descriptors = @[hotelDescriptor, roomDescriptor, startDateDescriptor];
+    self.sortedReservations = [self.reservations sortedArrayUsingDescriptors:descriptors];
+    [self.tableView reloadData];
     
 }
 
@@ -120,20 +125,22 @@
     
 }
 
+
 #pragma mark - UITableViewDataSource
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    Reservation *reservation = self.sortedReservations[indexPath.row];
-    NSString *startDate = [self dateAsString:reservation.startDate];
-    NSString *endDate = [self dateAsString:reservation.endDate];
+//    Reservation *reservation = self.sortedReservations[indexPath.row];
+    Reservation *reservation = [self.fetchedResultsController objectAtIndexPath:indexPath];
+//    NSString *startDate = [self dateAsString:reservation.startDate];
+//    NSString *endDate = [self dateAsString:reservation.endDate];
     
     ReservationCell *cell = (ReservationCell*)[self.tableView dequeueReusableCellWithIdentifier:@"RESERVATION_CELL" forIndexPath:indexPath];
 
-    cell.hotelLabel.text = reservation.room.hotel.name;
-    cell.roomLabel.text = [[NSString alloc] initWithFormat:@"Room# %@", reservation.room.number];
-    cell.dateLabel.text = [[NSString alloc] initWithFormat:@"%@ ... %@", startDate, endDate];
-    cell.guestLabel.text = [[NSString alloc] initWithFormat:@"%@, %@", reservation.guest.lastname, reservation.guest.firstname];
+//    cell.hotelLabel.text = reservation.room.hotel.name;
+//    cell.roomLabel.text = [[NSString alloc] initWithFormat:@"Room# %@", reservation.room.number];
+//    cell.dateLabel.text = [[NSString alloc] initWithFormat:@"%@ ... %@", startDate, endDate];
+//    cell.guestLabel.text = [[NSString alloc] initWithFormat:@"%@, %@", reservation.guest.lastname, reservation.guest.firstname];
     
-//    [self configureCell:cell atIndexPath:indexPath];
+    [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
 
@@ -148,15 +155,27 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         Reservation *selectedReservation = self.sortedReservations[indexPath.row];
         [self.hotelService removeReservation:selectedReservation];
-        [self.tableView reloadData];
+        [self reloadSortedReservations];
     }
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if ([self.sortedReservations count] > 0) {
-        return [self.sortedReservations count];
-    }
-    return 0;
+//    if ([self.sortedReservations count] > 0) {
+//        return [self.sortedReservations count];
+//    }
+//    return 0;
+
+    NSArray *sections = [self.fetchedResultsController sections];
+    id<NSFetchedResultsSectionInfo> sectionInfo = [sections objectAtIndex:section];
+    
+//    id sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
+    NSLog(@"%lu", (unsigned long)[sectionInfo numberOfObjects]);
+    return [sectionInfo numberOfObjects];
+
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return [[self.fetchedResultsController sections] count];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
